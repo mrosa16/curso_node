@@ -1,3 +1,5 @@
+import { appException } from "@exceptions/app-exceptions";
+
 export class ReturnError {
   error: boolean;
   message: string;
@@ -6,7 +8,10 @@ export class ReturnError {
   constructor(res: Response, error: Error, errorCode?: number) {
     this.error = true;
     this.message = error.message;
-    this.errorCode = this.errorCode;
+
+    if (error instanceof appException) {
+      this.errorCode = error.errorCode;
+    }
 
     res.status(errorCode || 500).send(this);
   }
