@@ -1,5 +1,6 @@
 import { BasRequestException } from "@exceptions/bad-request-exception";
 import { PrismaClient } from "@prisma/client";
+import { createPasswordHashed } from "@utils/password";
 import { notFoundException } from "../../exceptions/not-found-exceptions";
 import { userInsertDTO } from "./dtos/user-insert.dto";
 import { userModel } from "./user.model";
@@ -51,7 +52,12 @@ export const createUser = async (body: userInsertDTO): Promise<userModel> => {
     throw new BasRequestException("CPF exist in DB");
   }
 
+  const user: userInsertDTO = {
+    ...body,
+    password: await createPasswordHashed(body.password),
+  };
+
   return prisma.user.create({
-    data: body,
+    data: user,
   });
 };
