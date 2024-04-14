@@ -23,12 +23,15 @@ export const verifyToken = async (authorization?: string): Promise<UserAuth> => 
   if (!authorization) {
     throw new unauthorizedException();
   }
-  const [, token] = authorization.split("");
+  const [bearer, token] = authorization.split(" ");
+
+  if (bearer !== "Bearer" || !token) {
+    throw new unauthorizedException();
+  }
 
   try {
-    const docodedToken = <UserAuth>verify(token, PASSWORD_JWT);
-    console.log("decoded", docodedToken);
-    return docodedToken;
+    const decodedToken = verify(token, PASSWORD_JWT) as UserAuth;
+    return decodedToken;
   } catch (error) {
     throw new unauthorizedException();
   }
