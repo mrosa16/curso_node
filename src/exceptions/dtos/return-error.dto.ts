@@ -1,4 +1,4 @@
-import { appException } from "@exceptions/app-exceptions";
+import { appException } from '@exceptions/app-exceptions';
 
 export class ReturnError {
   error: boolean;

@@ -1,9 +1,9 @@
-import { Express } from "express";
-import fs from "fs";
-import path from "path";
+import { Express } from 'express';
+import fs from 'fs';
+import path from 'path';
 
 export const routerLoader = (app: Express): void => {
-  const modulesPath = path.join(__dirname, "modules");
+  const modulesPath = path.join(__dirname, 'modules');
 
   fs.readdirSync(modulesPath).forEach(async (dir) => {
     const modulePath = path.join(modulesPath, dir);
@@ -13,7 +13,7 @@ export const routerLoader = (app: Express): void => {
 
       if (fs.existsSync(controllerPath)) {
         const controller = await import(controllerPath);
-        if (controller.default && typeof controller.default === "function") {
+        if (controller.default && typeof controller.default === 'function') {
           app.use(controller.default);
         }
       }

@@ -1,9 +1,9 @@
-import { unauthorizedException } from "@exceptions/unauthorized-exception";
-import { UserAuth } from "@modules/auth/dtos/user-auth.dto";
-import { userModel } from "@modules/user/user.model";
-import { sign, verify } from "jsonwebtoken";
+import { unauthorizedException } from '@exceptions/unauthorized-exception';
+import { UserAuth } from '@modules/auth/dtos/user-auth.dto';
+import { userModel } from '@modules/user/user.model';
+import { sign, verify } from 'jsonwebtoken';
 
-export const PASSWORD_JWT = "umasenhamuitograndedepoismudar";
+export const PASSWORD_JWT = 'umasenhamuitograndedepoismudar';
 export const generateToken = (user: userModel): string => {
   return sign(
     {
@@ -14,8 +14,8 @@ export const generateToken = (user: userModel): string => {
     PASSWORD_JWT,
     {
       subject: String(user.id),
-      expiresIn: "60480000",
-    }
+      expiresIn: '60480000',
+    },
   );
 };
 
@@ -23,9 +23,9 @@ export const verifyToken = async (authorization?: string): Promise<UserAuth> => 
   if (!authorization) {
     throw new unauthorizedException();
   }
-  const [bearer, token] = authorization.split(" ");
+  const [bearer, token] = authorization.split(' ');
 
-  if (bearer !== "Bearer" || !token) {
+  if (bearer !== 'Bearer' || !token) {
     throw new unauthorizedException();
   }
 

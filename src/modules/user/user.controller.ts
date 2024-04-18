@@ -2,8 +2,10 @@ import { ReturnError } from '@exceptions/dtos/return-error.dto';
 import { notFoundException } from '@exceptions/not-found-exceptions';
 import { Request, Response, Router } from 'express';
 import { authAdminMiddleware } from 'src/middlewares/auth-admin.middleware';
+import { authMiddleware } from 'src/middlewares/auth.middleware';
+import { userEditPasswordDTO } from './dtos/user-edit-password.dto';
 import { userInsertDTO } from './dtos/user-insert.dto';
-import { createUser, getUsers } from './user.service';
+import { createUser, editPassword, getUsers } from './user.service';
 
 const createUserController = async (
   req: Request<undefined, undefined, userInsertDTO>,
@@ -27,12 +29,23 @@ const getUsersController = async (req: Request, res: Response): Promise<void> =>
   res.send(users);
 };
 
+const editPasswordController = async (
+  req: Request<undefined, undefined, userEditPasswordDTO>,
+  res: Response,
+): Promise<void> => {
+  const user = await editPassword(15, req.body).catch((error) => {
+    new ReturnError(res, error);
+  });
+  res.send(user);
+};
+
 const userRouter = Router();
 const router = Router();
 userRouter.use('/user', router);
 
 router.post('/', createUserController);
-//router.use(authMiddleware);
+router.use(authMiddleware);
+router.patch('/', editPasswordController);
 router.use(authAdminMiddleware);
 router.get('/', getUsersController);
 

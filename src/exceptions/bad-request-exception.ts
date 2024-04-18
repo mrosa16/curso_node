@@ -1,4 +1,4 @@
-import { appException } from "./app-exceptions";
+import { appException } from './app-exceptions';
 
 export class BasRequestException extends appException {
   constructor(message: string) {

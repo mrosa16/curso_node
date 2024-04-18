@@ -1,7 +1,7 @@
-import { appException } from "./app-exceptions";
+import { appException } from './app-exceptions';
 
 export class internalServerErrorExceptions extends appException {
   constructor() {
-    super("Internal Server Error", 500);
+    super('Internal Server Error', 500);
   }
 }
