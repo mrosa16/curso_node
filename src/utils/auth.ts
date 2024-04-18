@@ -36,3 +36,9 @@ export const verifyToken = async (authorization?: string): Promise<UserAuth> => 
     throw new unauthorizedException();
   }
 };
+
+export const getUserByToken = async (req: Request): Promise<UserAuth> => {
+  const authorization = req.headers.authorization;
+
+  return verifyToken(authorization);
+};

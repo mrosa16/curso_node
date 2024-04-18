@@ -1,5 +1,6 @@
 import { ReturnError } from '@exceptions/dtos/return-error.dto';
 import { notFoundException } from '@exceptions/not-found-exceptions';
+import { getUserByToken } from '@utils/auth';
 import { Request, Response, Router } from 'express';
 import { authAdminMiddleware } from 'src/middlewares/auth-admin.middleware';
 import { authMiddleware } from 'src/middlewares/auth.middleware';
@@ -33,7 +34,8 @@ const editPasswordController = async (
   req: Request<undefined, undefined, userEditPasswordDTO>,
   res: Response,
 ): Promise<void> => {
-  const user = await editPassword(15, req.body).catch((error) => {
+  const userAuth = await getUserByToken(req);
+  const user = await editPassword(userAuth.userId, req.body).catch((error) => {
     new ReturnError(res, error);
   });
   res.send(user);
